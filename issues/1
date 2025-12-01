@@ -1,0 +1,15 @@
+## Issue: Migration Failure
+
+**Summary:**
+- **Task:** Migration of a Next.js app from `softgenai/sg-a7cfd0c2-0018-46f5-b1b3-bc4b891e54f7-1763826923` to `phildass/Learnapt-next`, rebranding, preparing for deployment on Vercel (`learnapt.iiskills.in`), and bug fixes.
+- **Expected:** Copilot Chat to copy all major files (landing page, assessment, results logic, configs, src, public, uploads, logs), update references, enable deployment, and fix the elaborate test results bug.
+- **Actual:** Only branches were created (`init-migration`, etc). No code or application files appeared in repo. Despite repeated confirmations in chat, Copilot failed to push files—wasting significant time.
+
+**Supporting details:**
+- Screenshots supplied (images showing branch creation, lack of files, stuck results page)
+- Chat log shows persistent requests, Copilot confirmations, and delays.
+- Bug: 'Elaborate Test' results stuck (Analyzing your responses...) and headline missing.
+- The repo remains functionally unchanged; user expects code and working app logic, not just branch creation.
+- Requesting escalation and direct support intervention for resolution and explanation.
+
+Please reference uploaded images: image1 (stuck results), image2 (branches screenshot).
