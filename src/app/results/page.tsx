@@ -268,7 +268,9 @@ export default function ResultsPage() {
             hasError: false,
           });
         });
-      } catch {
+      } catch (error) {
+        // Log parsing errors for debugging - this happens when sessionStorage contains invalid JSON
+        console.error("Failed to parse results data:", error);
         startTransition(() => {
           setState({
             resultsData: null,
@@ -353,7 +355,39 @@ export default function ResultsPage() {
   }
 
   const testTypeLabel = resultsData.testType === "brief" ? "Brief Test" : "Elaborate Test";
-  const accentColor = resultsData.testType === "brief" ? "blue" : "purple";
+  const isBriefTest = resultsData.testType === "brief";
+
+  // Helper function to get accent color classes
+  const getAccentClasses = (type: "bg" | "text" | "border" | "bg-light" | "border-light") => {
+    const classes = {
+      brief: {
+        bg: "bg-blue-600",
+        text: "text-blue-600",
+        border: "border-blue-800",
+        "bg-light": "bg-blue-50 dark:bg-blue-900/20",
+        "border-light": "border-blue-200",
+      },
+      elaborate: {
+        bg: "bg-purple-600",
+        text: "text-purple-600",
+        border: "border-purple-800",
+        "bg-light": "bg-purple-50 dark:bg-purple-900/20",
+        "border-light": "border-purple-200",
+      },
+    };
+    return classes[resultsData.testType][type];
+  };
+
+  // Helper for insight colors
+  const getInsightColorClasses = (color: string) => {
+    const colorMap: Record<string, { bg: string; text: string }> = {
+      blue: { bg: "bg-blue-100 dark:bg-blue-900/50", text: "text-blue-600" },
+      purple: { bg: "bg-purple-100 dark:bg-purple-900/50", text: "text-purple-600" },
+      amber: { bg: "bg-amber-100 dark:bg-amber-900/50", text: "text-amber-600" },
+      green: { bg: "bg-green-100 dark:bg-green-900/50", text: "text-green-600" },
+    };
+    return colorMap[color] || colorMap.blue;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -362,7 +396,7 @@ export default function ResultsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center gap-2">
-              <Brain className={`h-8 w-8 text-${accentColor}-600`} />
+              <Brain className={`h-8 w-8 ${getAccentClasses("text")}`} />
               <span className="text-xl font-bold text-slate-900 dark:text-white">Learnapt</span>
             </Link>
             <span className="text-sm text-slate-500 dark:text-slate-400">{testTypeLabel} Results</span>
@@ -372,9 +406,9 @@ export default function ResultsPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
         {/* Success Banner */}
-        <div className={`bg-${accentColor}-50 dark:bg-${accentColor}-900/20 border border-${accentColor}-200 dark:border-${accentColor}-800 rounded-xl p-6 mb-8`}>
+        <div className={`${getAccentClasses("bg-light")} border ${getAccentClasses("border-light")} dark:${getAccentClasses("border")} rounded-xl p-6 mb-8`}>
           <div className="flex items-center gap-4">
-            <div className={`p-3 bg-${accentColor}-600 rounded-full`}>
+            <div className={`p-3 ${getAccentClasses("bg")} rounded-full`}>
               <Award className="h-8 w-8 text-white" />
             </div>
             <div>
@@ -399,22 +433,25 @@ export default function ResultsPage() {
         <div className="mb-8">
           <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Key Insights</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {analysis.insights.map((insight, index) => (
-              <div
-                key={index}
-                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
-              >
-                <div className={`w-12 h-12 bg-${insight.color}-100 dark:bg-${insight.color}-900/50 rounded-full flex items-center justify-center mb-4`}>
-                  <insight.icon className={`h-6 w-6 text-${insight.color}-600`} />
+            {analysis.insights.map((insight, index) => {
+              const colorClasses = getInsightColorClasses(insight.color);
+              return (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+                >
+                  <div className={`w-12 h-12 ${colorClasses.bg} rounded-full flex items-center justify-center mb-4`}>
+                    <insight.icon className={`h-6 w-6 ${colorClasses.text}`} />
+                  </div>
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
+                    {insight.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {insight.description}
+                  </p>
                 </div>
-                <h3 className="font-semibold text-slate-900 dark:text-white mb-2">
-                  {insight.title}
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  {insight.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -439,8 +476,8 @@ export default function ResultsPage() {
           <ul className="space-y-3">
             {analysis.recommendations.map((rec, index) => (
               <li key={index} className="flex items-start gap-3">
-                <div className={`w-6 h-6 bg-${accentColor}-100 dark:bg-${accentColor}-900/50 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                  <span className={`text-${accentColor}-600 text-sm font-bold`}>{index + 1}</span>
+                <div className={`w-6 h-6 ${isBriefTest ? "bg-blue-100 dark:bg-blue-900/50" : "bg-purple-100 dark:bg-purple-900/50"} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                  <span className={`${isBriefTest ? "text-blue-600" : "text-purple-600"} text-sm font-bold`}>{index + 1}</span>
                 </div>
                 <span className="text-slate-700 dark:text-slate-300">{rec}</span>
               </li>
@@ -466,7 +503,7 @@ export default function ResultsPage() {
                   </div>
                   <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                     <div
-                      className={`h-full bg-${accentColor}-600`}
+                      className={`h-full ${isBriefTest ? "bg-blue-600" : "bg-purple-600"}`}
                       style={{ width: `${(answeredQuestions / totalQuestions) * 100}%` }}
                     />
                   </div>
