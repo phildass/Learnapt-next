@@ -1,8 +1,4 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "projectId": "learnapt-next",
-  "framework": "nextjs",
-  "regions": ["sin1"],
   "headers": [
     {
       "source": "/(.*)",
