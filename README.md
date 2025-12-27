@@ -46,7 +46,9 @@ npm run dev
 
 ## Deployment
 
-### Deployment to Subdomain (learn-apt.iiskills.cloud)
+**For complete deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
+
+### Quick Deploy to Subdomain (learn-apt.iiskills.cloud)
 
 This application is configured to run on the exclusive subdomain `learn-apt.iiskills.cloud`. Follow these steps for deployment:
 
@@ -153,4 +155,14 @@ src/
 
 ## License
 
-This project is private and proprietary to Learnapt.
+This project is open source and available for educational purposes.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For deployment assistance, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+For issues or questions, please open an issue on GitHub.
