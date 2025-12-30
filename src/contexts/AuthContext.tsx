@@ -1,9 +1,10 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (password: string) => boolean;
   logout: () => void;
 }
@@ -14,14 +15,18 @@ const ADMIN_PASSWORD = "phil123";
 const AUTH_STORAGE_KEY = "learnapt-admin-auth";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Initialize authentication state from sessionStorage
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    if (typeof window !== "undefined") {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load authentication state from sessionStorage on mount (client-side only)
+  useEffect(() => {
+    const loadAuth = () => {
       const storedAuth = sessionStorage.getItem(AUTH_STORAGE_KEY);
-      return storedAuth === "true";
-    }
-    return false;
-  });
+      setIsAuthenticated(storedAuth === "true");
+      setIsLoading(false);
+    };
+    loadAuth();
+  }, []);
 
   const login = (password: string): boolean => {
     if (password === ADMIN_PASSWORD) {
@@ -38,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

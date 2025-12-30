@@ -17,6 +17,7 @@ import {
   CheckCircle,
   Zap,
   BookOpen,
+  Loader2,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -38,7 +39,7 @@ interface AssessmentRecord {
 }
 
 export default function AdminPage() {
-  const { isAuthenticated, login, logout } = useAuth();
+  const { isAuthenticated, isLoading, login, logout } = useAuth();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [assessments, setAssessments] = useState<AssessmentRecord[]>([]);
@@ -186,6 +187,18 @@ export default function AdminPage() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
+
+  // Loading State
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 text-blue-600 animate-spin mx-auto mb-4" />
+          <p className="text-slate-600 dark:text-slate-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Login Screen
   if (!isAuthenticated) {
