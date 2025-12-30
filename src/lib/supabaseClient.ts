@@ -18,40 +18,19 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-/**
- * Get the cookie domain for cross-subdomain authentication
- * In production, returns .iiskills.cloud to share cookies across subdomains
- * In development (localhost), returns undefined to use default cookie behavior
- */
-function getCookieDomain(): string | undefined {
-  // In browser environment
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname
-    // For localhost or development, don't set cookie domain
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return undefined
-    }
-    // For production subdomains, use the main domain with dot prefix
-    if (hostname.includes('iiskills.cloud')) {
-      return '.iiskills.cloud'
-    }
-    return undefined
-  }
-  
-  // In server environment, use env variable if set
-  return process.env.NEXT_PUBLIC_COOKIE_DOMAIN
-}
-
 // Supabase project URL and public anonymous key
 // These are safe to use in the browser as they are public credentials
-// NOTE: These default values are from the main iiskills-cloud repository
-// Replace with your actual values in .env.local
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://octgncmruhsbrxpxrkzl.supabase.co"
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdGduY21ydWhzYnJ4cHhya3psIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMxMjAzODEsImV4cCI6MjA0ODY5NjM4MX0.rq5yxn9s2CbY7qB7y6DlH1qN6Xj4VzWBqQJZ5Xj4VzY"
+// IMPORTANT: These must be set via environment variables
+// For build time, we provide placeholder values that will be replaced at runtime
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUxOTI4MDAsImV4cCI6MTk2MDc2ODgwMH0.placeholder'
 
-// Validate that Supabase credentials are configured
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase configuration. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local')
+// Validate that Supabase credentials are configured (only in browser, not during build)
+if (typeof window !== 'undefined') {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error('Missing Supabase configuration. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local')
+    console.error('The application will not function correctly without valid Supabase credentials.')
+  }
 }
 
 /**
@@ -170,7 +149,7 @@ export async function signInWithEmail(email: string, password: string) {
  *   console.log('Signed up successfully')
  * }
  */
-export async function signUpWithEmail(email: string, password: string, metadata?: any) {
+export async function signUpWithEmail(email: string, password: string, metadata?: Record<string, unknown>) {
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -198,7 +177,7 @@ export async function signUpWithEmail(email: string, password: string, metadata?
  * @param {Object} user - User object from Supabase
  * @returns {boolean} True if user is an admin
  */
-export function isAdmin(user: any): boolean {
+export function isAdmin(user: { user_metadata?: { role?: string }; email?: string } | null): boolean {
   if (!user) return false
   
   // Check if user has admin role in metadata
@@ -207,7 +186,7 @@ export function isAdmin(user: any): boolean {
   // Check if user has admin email (fallback)
   // You can configure admin emails in Supabase dashboard or environment variables
   const adminEmails = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(',') || []
-  if (adminEmails.includes(user.email)) return true
+  if (user.email && adminEmails.includes(user.email)) return true
   
   return false
 }

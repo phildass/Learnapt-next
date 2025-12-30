@@ -90,8 +90,8 @@ export default function AdminPage() {
     
     const result = await login(email, password);
     if (result.success) {
-      setPassword("");
       setEmail("");
+      setPassword("");
     } else {
       setError(result.error || "Invalid credentials. Please try again.");
     }
@@ -99,8 +99,8 @@ export default function AdminPage() {
 
   const handleLogout = async () => {
     await logout();
-    setPassword("");
     setEmail("");
+    setPassword("");
     setSelectedAssessment(null);
   };
 
