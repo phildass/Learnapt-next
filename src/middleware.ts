@@ -29,6 +29,20 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(url);
       }
       
+      // Verify email is confirmed (additional security layer)
+      // Note: When Supabase email confirmation is properly configured, auth.getUser() 
+      // should only return users with confirmed emails. This check provides defense-in-depth
+      // for cases where email confirmation is enforced at the project level.
+      if (user.email_confirmed_at === null && user.confirmed_at === null) {
+        // User hasn't confirmed their email - redirect to login
+        if (pathname === "/admin") {
+          return response;
+        }
+        const url = request.nextUrl.clone();
+        url.pathname = "/admin";
+        return NextResponse.redirect(url);
+      }
+      
       // User is authenticated via Supabase - set compatibility cookie
       const isProduction = process.env.NODE_ENV === "production";
       response.cookies.set("learnapt-admin-auth", "true", {

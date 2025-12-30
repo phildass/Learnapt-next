@@ -138,7 +138,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (useSupabase && supabase) {
       try {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) return { success: false, error: error.message };
+        if (error) {
+          // Provide user-friendly error messages for common authentication issues
+          // Note: String matching is defensive - Supabase should provide consistent error messages
+          const errorMsg = error.message.toLowerCase();
+          if (errorMsg.includes('email not confirmed') || 
+              errorMsg.includes('verify') ||
+              errorMsg.includes('confirmation')) {
+            return { 
+              success: false, 
+              error: "Please confirm your email address before logging in. Check your inbox for the confirmation link." 
+            };
+          }
+          return { success: false, error: error.message };
+        }
         if (data.session) {
           setUser(data.session.user);
           setIsAuthenticated(true);
@@ -185,8 +198,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setAuthCookie("true");
             return { success: true };
           }
-          // Email needs confirmation
-          return { success: true, error: "Please check your email to confirm your account" };
+          // Email needs confirmation - provide clear instructions
+          return { 
+            success: true, 
+            error: "Registration successful! Please check your email inbox for a confirmation link. You must confirm your email before you can log in." 
+          };
         }
         return { success: false, error: "Failed to create account" };
       } catch (error) {
