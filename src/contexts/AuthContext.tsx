@@ -1,12 +1,16 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (password: string) => boolean;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  register: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
+  useSupabase: boolean;
+  userEmail?: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,64 +27,184 @@ const AUTH_STORAGE_KEY = "learnapt-admin-auth";
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [useSupabase, setUseSupabase] = useState(false);
 
-  // Load authentication state from sessionStorage on mount (client-side only)
+  // Initialize Supabase client
+  const supabase = createClient();
+
   useEffect(() => {
-    const loadAuth = () => {
-      try {
-        // Check both sessionStorage and cookie for authentication
-        const storedAuth = sessionStorage.getItem(AUTH_STORAGE_KEY);
-        const cookieAuth = document.cookie.split("; ").find(row => row.startsWith("learnapt-admin-auth="));
-        const hasCookie = cookieAuth?.split("=")[1] === "true";
-        
-        // User is authenticated if either sessionStorage or cookie indicates so
-        const isAuth = storedAuth === "true" || hasCookie;
-        setIsAuthenticated(isAuth);
-        
-        // Sync sessionStorage with cookie state
-        if (isAuth && storedAuth !== "true") {
-          sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
+    const initAuth = async () => {
+      // Check if Supabase is configured
+      const hasSupabase = supabase !== null;
+      setUseSupabase(hasSupabase);
+
+      if (hasSupabase && supabase) {
+        // Check Supabase session
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            setIsAuthenticated(true);
+            setUserEmail(session.user.email || null);
+            // Set cookie for middleware compatibility
+            document.cookie = "learnapt-admin-auth=true; path=/; SameSite=Strict";
+          } else {
+            setIsAuthenticated(false);
+            setUserEmail(null);
+          }
+        } catch (error) {
+          console.error("Failed to check Supabase session:", error);
+          setIsAuthenticated(false);
         }
-      } catch (error) {
-        console.error("Failed to load authentication state:", error);
-        setIsAuthenticated(false);
-      } finally {
+
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+          if (session) {
+            setIsAuthenticated(true);
+            setUserEmail(session.user.email || null);
+            document.cookie = "learnapt-admin-auth=true; path=/; SameSite=Strict";
+          } else {
+            setIsAuthenticated(false);
+            setUserEmail(null);
+            document.cookie = "learnapt-admin-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+          }
+        });
+
+        setIsLoading(false);
+        return () => subscription.unsubscribe();
+      } else {
+        // Fallback to cookie-based auth (legacy)
+        try {
+          const storedAuth = sessionStorage.getItem(AUTH_STORAGE_KEY);
+          const cookieAuth = document.cookie.split("; ").find(row => row.startsWith("learnapt-admin-auth="));
+          const hasCookie = cookieAuth?.split("=")[1] === "true";
+          
+          const isAuth = storedAuth === "true" || hasCookie;
+          setIsAuthenticated(isAuth);
+          
+          if (isAuth && storedAuth !== "true") {
+            sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
+          }
+        } catch (error) {
+          console.error("Failed to load authentication state:", error);
+          setIsAuthenticated(false);
+        }
         setIsLoading(false);
       }
     };
-    loadAuth();
-  }, []);
 
-  const login = (password: string): boolean => {
-    if (password === ADMIN_PASSWORD) {
+    initAuth();
+  }, [supabase]);
+
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    if (useSupabase && supabase) {
+      // Use Supabase authentication
       try {
-        setIsAuthenticated(true);
-        sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
-        // Set a cookie for server-side middleware to check
-        document.cookie = "learnapt-admin-auth=true; path=/; SameSite=Strict";
-        return true;
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          return { success: false, error: error.message };
+        }
+
+        if (data.session) {
+          setIsAuthenticated(true);
+          setUserEmail(data.session.user.email || null);
+          // Set cookie for middleware compatibility
+          document.cookie = "learnapt-admin-auth=true; path=/; SameSite=Strict";
+          return { success: true };
+        }
+
+        return { success: false, error: "Failed to create session" };
       } catch (error) {
-        console.error("Failed to save authentication state:", error);
-        setIsAuthenticated(false);
-        return false;
+        console.error("Login error:", error);
+        return { success: false, error: "An unexpected error occurred" };
       }
+    } else {
+      // Fallback to hardcoded password (legacy)
+      // In this mode, email is ignored and password is checked against ADMIN_PASSWORD
+      if (password === ADMIN_PASSWORD) {
+        try {
+          setIsAuthenticated(true);
+          sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
+          document.cookie = "learnapt-admin-auth=true; path=/; SameSite=Strict";
+          return { success: true };
+        } catch (error) {
+          console.error("Failed to save authentication state:", error);
+          setIsAuthenticated(false);
+          return { success: false, error: "Failed to save session" };
+        }
+      }
+      return { success: false, error: "Invalid password" };
     }
-    return false;
   };
 
-  const logout = () => {
-    try {
-      setIsAuthenticated(false);
-      sessionStorage.removeItem(AUTH_STORAGE_KEY);
-      // Clear the auth cookie
-      document.cookie = "learnapt-admin-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
-    } catch (error) {
-      console.error("Failed to clear authentication state:", error);
+  const register = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    if (useSupabase && supabase) {
+      // Use Supabase authentication
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (error) {
+          return { success: false, error: error.message };
+        }
+
+        if (data.user) {
+          // Check if email confirmation is required
+          if (data.user.identities && data.user.identities.length === 0) {
+            return { success: false, error: "An account with this email already exists" };
+          }
+          
+          // Auto-login if session was created
+          if (data.session) {
+            setIsAuthenticated(true);
+            setUserEmail(data.session.user.email || null);
+            document.cookie = "learnapt-admin-auth=true; path=/; SameSite=Strict";
+            return { success: true };
+          }
+          
+          return { success: true, error: "Please check your email to confirm your account" };
+        }
+
+        return { success: false, error: "Failed to create account" };
+      } catch (error) {
+        console.error("Registration error:", error);
+        return { success: false, error: "An unexpected error occurred" };
+      }
+    } else {
+      // Registration not supported in legacy mode
+      return { success: false, error: "Registration is not available. Please use the default password." };
+    }
+  };
+
+  const logout = async (): Promise<void> => {
+    if (useSupabase && supabase) {
+      try {
+        await supabase.auth.signOut();
+        setIsAuthenticated(false);
+        setUserEmail(null);
+        document.cookie = "learnapt-admin-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    } else {
+      try {
+        setIsAuthenticated(false);
+        sessionStorage.removeItem(AUTH_STORAGE_KEY);
+        document.cookie = "learnapt-admin-auth=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+      } catch (error) {
+        console.error("Failed to clear authentication state:", error);
+      }
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, register, logout, useSupabase, userEmail }}>
       {children}
     </AuthContext.Provider>
   );

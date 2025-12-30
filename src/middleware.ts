@@ -1,28 +1,56 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { createClient } from "@/lib/supabase/middleware";
 
 // This middleware protects /admin routes by checking for authentication
 // All /admin routes require authentication, preventing direct URL access
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Check if the request is for an admin route
   if (pathname.startsWith("/admin")) {
-    // Check for authentication cookie
-    const authCookie = request.cookies.get("learnapt-admin-auth");
+    // Try to create Supabase client for session validation
+    const supabaseClient = await createClient(request);
     
-    // If no auth cookie and not on the login page, allow access to /admin for login
-    // The client-side will show the login form
-    if (!authCookie || authCookie.value !== "true") {
-      // Allow access to /admin root for login form
-      if (pathname === "/admin") {
-        return NextResponse.next();
+    if (supabaseClient) {
+      // Supabase is configured - check Supabase session
+      const { supabase, response } = supabaseClient;
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        // No Supabase session - allow access to /admin for login
+        if (pathname === "/admin") {
+          return response;
+        }
+        
+        // For any other /admin subroutes, redirect to /admin login
+        const url = request.nextUrl.clone();
+        url.pathname = "/admin";
+        return NextResponse.redirect(url);
       }
       
-      // For any other /admin subroutes, redirect to /admin login
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin";
-      return NextResponse.redirect(url);
+      // User is authenticated via Supabase - set compatibility cookie
+      response.cookies.set("learnapt-admin-auth", "true", {
+        path: "/",
+        sameSite: "strict",
+      });
+      
+      return response;
+    } else {
+      // Supabase not configured - fall back to cookie-based auth
+      const authCookie = request.cookies.get("learnapt-admin-auth");
+      
+      if (!authCookie || authCookie.value !== "true") {
+        // Allow access to /admin root for login form
+        if (pathname === "/admin") {
+          return NextResponse.next();
+        }
+        
+        // For any other /admin subroutes, redirect to /admin login
+        const url = request.nextUrl.clone();
+        url.pathname = "/admin";
+        return NextResponse.redirect(url);
+      }
     }
   }
 
