@@ -32,7 +32,8 @@ export function middleware(request: NextRequest) {
 // Configure which routes this middleware should run on
 export const config = {
   matcher: [
-    // Match all /admin routes
+    // Match /admin and all /admin subroutes
+    "/admin",
     "/admin/:path*",
   ],
 };
