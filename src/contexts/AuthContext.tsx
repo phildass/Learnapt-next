@@ -1,9 +1,45 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { supabase, getCurrentUser, signInWithEmail, signOutUser, isAdmin } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
+// Optional legacy fallback admin password (for dev only)
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "phil123";
+const AUTH_STORAGE_KEY = "learnapt-admin-auth";
+
+// Cookie helpers
+function setAuthCookie(value: string) {
+  const isProduction = process.env.NODE_ENV === "production";
+  const cookieOptions = [
+    `learnapt-admin-auth=${value}`,
+    "path=/",
+    "SameSite=Strict",
+    isProduction ? "Secure" : "",
+  ].filter(Boolean).join("; ");
+  document.cookie = cookieOptions;
+}
+
+function clearAuthCookie() {
+  const isProduction = process.env.NODE_ENV === "production";
+  const cookieOptions = [
+    "learnapt-admin-auth=",
+    "path=/",
+    "expires=Thu, 01 Jan 1970 00:00:00 GMT",
+    "SameSite=Strict",
+    isProduction ? "Secure" : "",
+  ].filter(Boolean).join("; ");
+  document.cookie = cookieOptions;
+}
+
+function getAuthCookie(): boolean {
+  const cookieAuth = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("learnapt-admin-auth="));
+  return cookieAuth?.split("=")[1] === "true";
+}
+
+// Auth context type
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
@@ -11,109 +47,194 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
+  register: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  useSupabase: boolean;
+  userEmail?: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-/**
- * AuthProvider - Provides authentication state using Supabase
- * 
- * This replaces the previous hardcoded password implementation with proper
- * Supabase authentication. It supports:
- * - Email/password authentication
- * - Session persistence
- * - Admin role detection
- * - Cross-subdomain authentication (when configured)
- * 
- * Usage: Wrap your app with <AuthProvider> in layout.tsx
- */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [useSupabase, setUseSupabase] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  // Load authentication state from Supabase on mount
+  const supabase = createClient();
+
+  // Detect Supabase configuration on mount
   useEffect(() => {
-    const loadAuth = async () => {
+    setUseSupabase(!!(supabase && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY));
+  }, [supabase]);
+
+  // Initialize authentication state on mount
+  useEffect(() => {
+    const initAuth = async () => {
+      setIsLoading(true);
+      if (useSupabase && supabase) {
+        // Supabase session init
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            setUser(session.user);
+            setIsAuthenticated(true);
+            setUserEmail(session.user.email || null);
+            setAuthCookie("true");
+          } else {
+            setUser(null);
+            setIsAuthenticated(false);
+            setUserEmail(null);
+            clearAuthCookie();
+          }
+        } catch (error) {
+          setUser(null);
+          setIsAuthenticated(false);
+          setUserEmail(null);
+          clearAuthCookie();
+        }
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+          if (session) {
+            setUser(session.user);
+            setIsAuthenticated(true);
+            setUserEmail(session.user.email || null);
+            setAuthCookie("true");
+          } else {
+            setUser(null);
+            setIsAuthenticated(false);
+            setUserEmail(null);
+            clearAuthCookie();
+          }
+        });
+        setIsLoading(false);
+        return () => subscription.unsubscribe();
+      } else {
+        // Legacy cookie fallback (dev/demo only)
+        try {
+          const storedAuth = sessionStorage.getItem(AUTH_STORAGE_KEY);
+          const hasCookie = getAuthCookie();
+          const isAuth = storedAuth === "true" || hasCookie;
+          setIsAuthenticated(isAuth);
+          setUser(null);
+          setUserEmail(null);
+          if (isAuth && storedAuth !== "true") {
+            sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
+          }
+        } catch {
+          setIsAuthenticated(false);
+        }
+        setIsLoading(false);
+      }
+    };
+    initAuth();
+    // Only run once on mount or if supabase/useSupabase changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useSupabase, supabase]);
+
+  // Login function
+  const login = async (email: string, password: string) => {
+    setIsLoading(true);
+    if (useSupabase && supabase) {
       try {
-        const currentUser = await getCurrentUser();
-        setUser(currentUser);
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) return { success: false, error: error.message };
+        if (data.session) {
+          setUser(data.session.user);
+          setIsAuthenticated(true);
+          setUserEmail(data.session.user.email || null);
+          setAuthCookie("true");
+          return { success: true };
+        }
+        return { success: false, error: "Failed to create session" };
       } catch (error) {
-        console.error("Failed to load authentication state:", error);
-        setUser(null);
+        return { success: false, error: "An unexpected error occurred" };
       } finally {
         setIsLoading(false);
       }
-    };
-
-    loadAuth();
-
-    // Listen for auth state changes (login, logout, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event);
-        setUser(session?.user || null);
+    } else {
+      // Legacy fallback (dev/demo only)
+      if (password === ADMIN_PASSWORD) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
+        setAuthCookie("true");
+        setUser(null);
+        setUserEmail(email ?? null);
         setIsLoading(false);
-      }
-    );
-
-    // Cleanup subscription on unmount
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  /**
-   * Login with email and password via Supabase
-   * 
-   * @param email - User's email address
-   * @param password - User's password  
-   * @returns Promise with success status and optional error message
-   */
-  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
-    try {
-      setIsLoading(true);
-      const { user: loggedInUser, error } = await signInWithEmail(email, password);
-      
-      if (error) {
-        return { success: false, error };
-      }
-
-      if (loggedInUser) {
-        setUser(loggedInUser);
         return { success: true };
       }
-
-      return { success: false, error: "Login failed" };
-    } catch (error) {
-      console.error("Login error:", error);
-      return { success: false, error: "An unexpected error occurred" };
-    } finally {
+      setIsAuthenticated(false);
       setIsLoading(false);
+      return { success: false, error: "Invalid password" };
     }
   };
 
-  /**
-   * Logout the current user via Supabase
-   */
+  // Register function
+  const register = async (email: string, password: string) => {
+    if (useSupabase && supabase) {
+      try {
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) return { success: false, error: error.message };
+        if (data.user) {
+          if (data.user.identities && data.user.identities.length === 0)
+            return { success: false, error: "An account with this email already exists" };
+          if (data.session) {
+            setUser(data.session.user);
+            setIsAuthenticated(true);
+            setUserEmail(data.session.user.email || null);
+            setAuthCookie("true");
+            return { success: true };
+          }
+          // Email needs confirmation
+          return { success: true, error: "Please check your email to confirm your account" };
+        }
+        return { success: false, error: "Failed to create account" };
+      } catch (error) {
+        return { success: false, error: "An unexpected error occurred" };
+      }
+    } else {
+      return { success: false, error: "Registration is not available. Use the default password (dev only)." };
+    }
+  };
+
+  // Logout function
   const logout = async () => {
-    try {
-      setIsLoading(true);
-      await signOutUser();
+    setIsLoading(true);
+    if (useSupabase && supabase) {
+      try {
+        await supabase.auth.signOut();
+      } catch (error) {
+        // log but ignore
+      }
       setUser(null);
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
+      setIsAuthenticated(false);
+      setUserEmail(null);
+      clearAuthCookie();
+      setIsLoading(false);
+    } else {
+      // Legacy
+      setIsAuthenticated(false);
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+      clearAuthCookie();
+      setUser(null);
+      setUserEmail(null);
       setIsLoading(false);
     }
   };
 
-  const value = {
+  // Helper: Admin detection (customize if you use Supabase roles)
+  const isAdmin = user ? (user.email?.endsWith("@your-admin-domain.com") ?? false) : false;
+
+  const value: AuthContextType = {
     user,
-    isAuthenticated: !!user,
-    isAdmin: user ? isAdmin(user) : false,
+    isAuthenticated,
+    isAdmin,
     isLoading,
     login,
     logout,
+    register,
+    useSupabase,
+    userEmail,
   };
 
   return (
@@ -123,6 +244,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Hook
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
