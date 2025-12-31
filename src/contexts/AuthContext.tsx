@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUserEmail(null);
             clearAuthCookie();
           }
-        } catch (error) {
+        } catch {
           setUser(null);
           setIsAuthenticated(false);
           setUserEmail(null);
@@ -128,8 +128,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
     initAuth();
-    // Only run once on mount or if supabase/useSupabase changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useSupabase, supabase]);
 
   // Login function
@@ -160,7 +158,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return { success: true };
         }
         return { success: false, error: "Failed to create session" };
-      } catch (error) {
+      } catch {
         return { success: false, error: "An unexpected error occurred" };
       } finally {
         setIsLoading(false);
@@ -205,7 +203,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           };
         }
         return { success: false, error: "Failed to create account" };
-      } catch (error) {
+      } catch {
         return { success: false, error: "An unexpected error occurred" };
       }
     } else {
@@ -219,7 +217,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (useSupabase && supabase) {
       try {
         await supabase.auth.signOut();
-      } catch (error) {
+      } catch {
         // log but ignore
       }
       setUser(null);
