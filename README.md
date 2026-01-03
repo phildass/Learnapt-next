@@ -5,10 +5,13 @@
 ## Features
 
 - **Elaborate Test**: In-depth assessment covering multiple modules with comprehensive questions
-- **Brief Test**: Quick assessment with three key modules:
+- **Brief Test**: Quick assessment with four key modules:
   - Learning Preferences
   - Problem-Solving Style
   - Motivation Drivers
+  - Numerical Reasoning
+- **Indian Context**: All monetary examples use Indian Rupee (₹) for relevance to Indian users
+- **Comprehensive Assessment**: Includes both personality and quantitative aptitude questions
 
 ## Tech Stack
 
