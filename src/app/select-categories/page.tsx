@@ -92,7 +92,7 @@ export default function SelectCategoriesPage() {
             Choose Your Aptitude Areas
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            Select the categories you'd like to be assessed on. You can choose one or more areas to customize your test experience.
+            Select the categories you&apos;d like to be assessed on. You can choose one or more areas to customize your test experience.
           </p>
         </div>
 
