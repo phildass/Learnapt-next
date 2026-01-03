@@ -133,6 +133,43 @@ const modules: Module[] = [
       },
     ],
   },
+  {
+    id: "numerical-reasoning",
+    title: "Numerical Reasoning",
+    description: "Assess your ability to work with numbers and solve practical problems.",
+    questions: [
+      {
+        id: "nr1",
+        text: "A shopkeeper bought an item for ₹800 and sold it for ₹1,000. What is the profit percentage?",
+        options: [
+          { value: "15", label: "15%" },
+          { value: "20", label: "20%" },
+          { value: "25", label: "25%" },
+          { value: "30", label: "30%" },
+        ],
+      },
+      {
+        id: "nr2",
+        text: "If a product originally costs ₹2,500 and is offered at a 20% discount, what is the final price?",
+        options: [
+          { value: "1800", label: "₹1,800" },
+          { value: "2000", label: "₹2,000" },
+          { value: "2100", label: "₹2,100" },
+          { value: "2250", label: "₹2,250" },
+        ],
+      },
+      {
+        id: "nr3",
+        text: "A person invests ₹10,000 at 8% simple interest per annum. How much interest will they earn in 2 years?",
+        options: [
+          { value: "1600", label: "₹1,600" },
+          { value: "1800", label: "₹1,800" },
+          { value: "2000", label: "₹2,000" },
+          { value: "1200", label: "₹1,200" },
+        ],
+      },
+    ],
+  },
 ];
 
 export default function BriefTestPage() {
