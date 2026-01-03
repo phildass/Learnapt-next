@@ -5,6 +5,24 @@
 ## Features
 
 - **Elaborate Test**: In-depth assessment covering multiple modules with comprehensive questions
+  - Learning Styles Assessment
+  - Cognitive Patterns
+  - Problem-Solving Approach
+  - Motivation & Drive
+  - Learning Environment Preferences
+  - Numerical & Data Reasoning (with 5 options including "I don't know")
+  - Quantitative Aptitude (with 5 options including "I don't know")
+  - Abstract & Logical Reasoning (with 5 options including "I don't know")
+  - Spatial & Visual Reasoning (with 5 options including "I don't know")
+  
+- **Brief Test**: Quick assessment with five key modules:
+  - Learning Preferences
+  - Problem-Solving Style
+  - Motivation Drivers
+  - Numerical & Data Reasoning (with 5 options including "I don't know")
+  - Abstract & Logical Reasoning (with 5 options including "I don't know")
+
+**Note**: Mathematical, quantitative, logical, spatial, and mechanical reasoning questions include a fifth option "E) I don't know" to allow test-takers to skip questions they're uncertain about. All currency references use ₹ (Rupee) or Rs instead of $ for localization.
 - **Brief Test**: Quick assessment with four key modules:
   - Learning Preferences
   - Problem-Solving Style
