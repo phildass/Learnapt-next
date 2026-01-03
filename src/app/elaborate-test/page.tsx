@@ -316,10 +316,10 @@ const modules: Module[] = [
         id: "qa1",
         text: "A vendor sells mangoes at ₹60 per kg and makes a profit of 20%. What was the cost price per kg?",
         options: [
-          { value: "50", label: "₹50" },
-          { value: "48", label: "₹48" },
-          { value: "55", label: "₹55" },
           { value: "45", label: "₹45" },
+          { value: "48", label: "₹48" },
+          { value: "50", label: "₹50" },
+          { value: "55", label: "₹55" },
         ],
       },
       {
