@@ -123,15 +123,15 @@ export default function Home() {
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
                   <Clock className="h-5 w-5 text-blue-600" />
-                  <span>~7 minutes to complete</span>
+                  <span>~10 minutes to complete</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
                   <CheckCircle className="h-5 w-5 text-blue-600" />
-                  <span>4 key modules</span>
+                  <span>5 key modules</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
                   <Target className="h-5 w-5 text-blue-600" />
-                  <span>12 focused questions</span>
+                  <span>25 focused questions</span>
                 </li>
               </ul>
               <div className="mb-4">
@@ -176,15 +176,15 @@ export default function Home() {
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
                   <Clock className="h-5 w-5 text-purple-600" />
-                  <span>~20-25 minutes to complete</span>
+                  <span>~30-40 minutes to complete</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
                   <CheckCircle className="h-5 w-5 text-purple-600" />
-                  <span>6 comprehensive modules</span>
+                  <span>8 comprehensive modules</span>
                 </li>
                 <li className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
                   <Target className="h-5 w-5 text-purple-600" />
-                  <span>30 detailed questions</span>
+                  <span>80 detailed questions</span>
                 </li>
               </ul>
               <div className="mb-4">
