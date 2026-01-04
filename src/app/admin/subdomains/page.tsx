@@ -61,7 +61,7 @@ export default function SubdomainsPage() {
   const handleSubdomainClick = (subdomainId: string) => {
     const adminUrl = getAdminUrl(subdomainId);
     if (adminUrl) {
-      window.location.href = adminUrl;
+      window.location.assign(adminUrl);
     }
   };
 
