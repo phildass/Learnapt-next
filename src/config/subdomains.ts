@@ -24,18 +24,6 @@ export const SUBDOMAINS: SubdomainConfig[] = [
     adminPath: "/admin",
     category: "learning",
   },
-  // Add more subdomains as they are created
-  // Example:
-  // {
-  //   id: "admin-central",
-  //   name: "Central Admin",
-  //   url: "https://admin.iiskills.cloud",
-  //   description: "Central administration dashboard for all iiskills.cloud services",
-  //   icon: "Settings",
-  //   status: "development",
-  //   adminPath: "/",
-  //   category: "admin",
-  // },
 ];
 
 // Get subdomain configuration by ID
@@ -66,10 +54,22 @@ export function getCurrentSubdomain(): SubdomainConfig | undefined {
   return getSubdomainByUrl(currentUrl);
 }
 
-// Get the admin URL for a specific subdomain
+// Get the admin URL for a specific subdomain with security validation
 export function getAdminUrl(subdomainId: string): string | undefined {
   const subdomain = getSubdomainById(subdomainId);
   if (!subdomain) return undefined;
+  
+  // Security: Validate that the URL is within the allowed iiskills.cloud domain
+  try {
+    const url = new URL(subdomain.url);
+    if (!url.hostname.endsWith('.iiskills.cloud') && url.hostname !== 'iiskills.cloud') {
+      console.error(`Security: Attempted to navigate to unauthorized domain: ${url.hostname}`);
+      return undefined;
+    }
+  } catch (error) {
+    console.error(`Invalid URL in subdomain configuration: ${subdomain.url}`, error);
+    return undefined;
+  }
   
   return `${subdomain.url}${subdomain.adminPath}`;
 }
