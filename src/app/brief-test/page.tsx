@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Brain, ChevronRight, ChevronLeft, Loader2 } from "lucide-react";
+import { Brain, ChevronRight, ChevronLeft, Check, Loader2 } from "lucide-react";
 
 interface Question {
   id: string;
@@ -498,9 +498,7 @@ export default function BriefTestPage() {
                         }`}
                       >
                         {currentAnswer === option.value && (
-                          <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
+                          <Check className="h-3 w-3 text-white" />
                         )}
                       </div>
                       <span className={`${
