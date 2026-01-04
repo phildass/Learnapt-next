@@ -234,8 +234,6 @@ const modules: Module[] = [
           { value: "summarize", label: "Write summaries and key points" },
           { value: "discuss", label: "Discuss and debate the findings" },
         ],
-      },
-    ],
   },
   {
     id: "problem-solving-deep",
@@ -341,8 +339,6 @@ const modules: Module[] = [
           { value: "urgent", label: "Focus on the most urgent first" },
           { value: "easy", label: "Start with the easiest to build momentum" },
         ],
-      },
-    ],
   },
   {
     id: "motivation-comprehensive",
@@ -448,8 +444,6 @@ const modules: Module[] = [
           { value: "goal-dependent", label: "Depends on how important the goal is" },
           { value: "help-seeking", label: "I seek help to overcome obstacles" },
         ],
-      },
-    ],
   },
   {
     id: "environment-preferences",
@@ -514,12 +508,6 @@ const modules: Module[] = [
           { value: "personal", label: "Personal items and decorations" },
           { value: "tools", label: "All necessary tools and resources nearby" },
           { value: "flexible", label: "Flexibility to change as needed" },
-        text: "My productivity is highest when I work:",
-        options: [
-          { value: "alone", label: "Alone in my personal space" },
-          { value: "coffee-shop", label: "In a coffee shop or public space" },
-          { value: "office", label: "In a structured office environment" },
-          { value: "home-office", label: "In a home office setup" },
         ],
       },
       {
@@ -530,12 +518,6 @@ const modules: Module[] = [
           { value: "recorded", label: "Recorded videos I can watch anytime" },
           { value: "self-paced", label: "Self-paced courses with no deadlines" },
           { value: "structured", label: "Structured courses with set schedules" },
-        text: "I manage my learning schedule by:",
-        options: [
-          { value: "fixed", label: "Setting fixed times each day" },
-          { value: "flexible", label: "Keeping it flexible based on energy" },
-          { value: "deadlines", label: "Working towards specific deadlines" },
-          { value: "spontaneous", label: "Learning spontaneously when inspired" },
         ],
       },
       {
@@ -546,12 +528,6 @@ const modules: Module[] = [
           { value: "library", label: "In a quiet public space like a library" },
           { value: "cafe", label: "In a cafe with ambient noise" },
           { value: "home", label: "In my comfortable home environment" },
-        text: "Physical comfort affects my learning:",
-        options: [
-          { value: "critical", label: "It's critical - I need the right setup" },
-          { value: "important", label: "It's important but not essential" },
-          { value: "minimal", label: "Minimal impact - I can adapt" },
-          { value: "varies", label: "Varies with the task" },
         ],
       },
       {
@@ -562,12 +538,6 @@ const modules: Module[] = [
           { value: "regular", label: "At regular intervals (e.g., Pomodoro)" },
           { value: "intuitive", label: "When I feel I need them" },
           { value: "frequent", label: "Frequently - short intense sessions work best" },
-        text: "I prefer to receive feedback:",
-        options: [
-          { value: "immediate", label: "Immediately as I work" },
-          { value: "periodic", label: "At regular intervals" },
-          { value: "end", label: "After completing the task" },
-          { value: "on-request", label: "Only when I request it" },
         ],
       },
       {
@@ -578,15 +548,7 @@ const modules: Module[] = [
           { value: "important", label: "Important but adaptable" },
           { value: "minimal", label: "Minimally important" },
           { value: "varies", label: "Varies by task and duration" },
-        text: "Distractions affect my learning:",
-        options: [
-          { value: "severely", label: "Severely - I need complete focus" },
-          { value: "moderately", label: "Moderately - some are manageable" },
-          { value: "minimally", label: "Minimally - I can filter them out" },
-          { value: "helps", label: "Sometimes help me think differently" },
         ],
-      },
-    ],
   },
   {
     id: "numerical-data-reasoning",
@@ -656,13 +618,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 60 km/h" },
           { value: "c", label: "C) 65 km/h" },
           { value: "d", label: "D) 70 km/h" },
-        text: "A train travels 180 km in 3 hours. What is its average speed in km/h?",
-        options: [
-          { value: "a", label: "A) 50 km/h" },
-          { value: "b", label: "B) 55 km/h" },
-          { value: "c", label: "C) 60 km/h" },
-          { value: "d", label: "D) 65 km/h" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -673,13 +628,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 10" },
           { value: "c", label: "C) 12" },
           { value: "d", label: "D) 15" },
-        text: "If the price of petrol increases from ₹80 to ₹96 per liter, what is the percentage increase?",
-        options: [
-          { value: "a", label: "A) 15%" },
-          { value: "b", label: "B) 18%" },
-          { value: "c", label: "C) 20%" },
-          { value: "d", label: "D) 25%" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -690,13 +638,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 25%" },
           { value: "c", label: "C) 30%" },
           { value: "d", label: "D) 35%" },
-        text: "A rectangle has length 15 cm and width 8 cm. What is its area?",
-        options: [
-          { value: "a", label: "A) 100 sq cm" },
-          { value: "b", label: "B) 120 sq cm" },
-          { value: "c", label: "C) 130 sq cm" },
-          { value: "d", label: "D) 140 sq cm" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -707,13 +648,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 5" },
           { value: "c", label: "C) 7" },
           { value: "d", label: "D) 9" },
-        text: "If 3x + 5 = 20, what is the value of x?",
-        options: [
-          { value: "a", label: "A) 3" },
-          { value: "b", label: "B) 4" },
-          { value: "c", label: "C) 5" },
-          { value: "d", label: "D) 6" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -724,15 +658,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 40 sq cm" },
           { value: "c", label: "C) 96 sq cm" },
           { value: "d", label: "D) 192 sq cm" },
-        text: "A product's price increased by 20% and then decreased by 20%. If the original price was ₹1,000, what is the final price?",
-        options: [
-          { value: "a", label: "A) ₹960" },
-          { value: "b", label: "B) ₹980" },
-          { value: "c", label: "C) ₹1,000" },
-          { value: "d", label: "D) ₹1,020" },
-          { value: "e", label: "E) I don't know" },
-        ],
-      },
     ],
   },
   {
@@ -899,8 +824,6 @@ const modules: Module[] = [
           { value: "24", label: "24" },
           { value: "25", label: "25" },
         ],
-      },
-    ],
   },
   {
     id: "abstract-logical-reasoning",
@@ -970,13 +893,6 @@ const modules: Module[] = [
           { value: "b", label: "B) A = C" },
           { value: "c", label: "C) A > C" },
           { value: "d", label: "D) Cannot be determined" },
-        text: "All teachers are educated. Some educated people are doctors. Which conclusion is definitely true?",
-        options: [
-          { value: "a", label: "A) All doctors are teachers" },
-          { value: "b", label: "B) Some teachers are doctors" },
-          { value: "c", label: "C) All teachers are educated" },
-          { value: "d", label: "D) Some doctors are not educated" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -987,13 +903,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 32" },
           { value: "c", label: "C) 35" },
           { value: "d", label: "D) 36" },
-        text: "Find the odd one out: 8, 27, 64, 100, 125",
-        options: [
-          { value: "a", label: "A) 8" },
-          { value: "b", label: "B) 27" },
-          { value: "c", label: "C) 64" },
-          { value: "d", label: "D) 100" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1004,13 +913,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 23" },
           { value: "c", label: "C) 24" },
           { value: "d", label: "D) 25" },
-        text: "Complete the analogy: Book : Pages :: Building : ?",
-        options: [
-          { value: "a", label: "A) Floors" },
-          { value: "b", label: "B) Bricks" },
-          { value: "c", label: "C) Rooms" },
-          { value: "d", label: "D) Windows" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1021,13 +923,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 7" },
           { value: "c", label: "C) 8" },
           { value: "d", label: "D) 15" },
-        text: "If A > B, B = C, and C < D, which statement is definitely true?",
-        options: [
-          { value: "a", label: "A) A > D" },
-          { value: "b", label: "B) A < D" },
-          { value: "c", label: "C) A > C" },
-          { value: "d", label: "D) B > D" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1038,15 +933,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Some Zips are Zops" },
           { value: "c", label: "C) Some Zaps are Zips" },
           { value: "d", label: "D) None is certain" },
-        text: "What comes next: 1, 4, 9, 16, 25, ?",
-        options: [
-          { value: "a", label: "A) 30" },
-          { value: "b", label: "B) 32" },
-          { value: "c", label: "C) 36" },
-          { value: "d", label: "D) 40" },
-          { value: "e", label: "E) I don't know" },
-        ],
-      },
     ],
   },
   {
@@ -1117,13 +1003,6 @@ const modules: Module[] = [
           { value: "b", label: "B) The same N" },
           { value: "c", label: "C) A rotated Z" },
           { value: "d", label: "D) Cannot be determined" },
-        text: "A dice is rolled twice and shows a 3, then a 5. What will be the number on the bottom face when it shows 5 on top? (Opposite faces add to 7)",
-        options: [
-          { value: "a", label: "A) 1" },
-          { value: "b", label: "B) 2" },
-          { value: "c", label: "C) 3" },
-          { value: "d", label: "D) 4" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1134,13 +1013,6 @@ const modules: Module[] = [
           { value: "b", label: "B) 8" },
           { value: "c", label: "C) 10" },
           { value: "d", label: "D) 12" },
-        text: "If you rotate a square 90 degrees clockwise, which corner moves to the top-right position from the top-left?",
-        options: [
-          { value: "a", label: "A) Bottom-left" },
-          { value: "b", label: "B) Bottom-right" },
-          { value: "c", label: "C) Top-right" },
-          { value: "d", label: "D) Stays the same" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1151,13 +1023,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Triangle" },
           { value: "c", label: "C) Pentagon" },
           { value: "d", label: "D) Smaller square" },
-        text: "How many edges does a triangular pyramid have?",
-        options: [
-          { value: "a", label: "A) 4" },
-          { value: "b", label: "B) 5" },
-          { value: "c", label: "C) 6" },
-          { value: "d", label: "D) 8" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1168,13 +1033,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Sphere" },
           { value: "c", label: "C) Pyramid" },
           { value: "d", label: "D) Cylinder" },
-        text: "A cylindrical tank with radius 7 cm is being filled. What pattern does the water surface form?",
-        options: [
-          { value: "a", label: "A) Sphere" },
-          { value: "b", label: "B) Circle" },
-          { value: "c", label: "C) Ellipse" },
-          { value: "d", label: "D) Rectangle" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1185,15 +1043,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Counter-clockwise at the same speed" },
           { value: "c", label: "C) Clockwise at half speed" },
           { value: "d", label: "D) Counter-clockwise at double speed" },
-        text: "If a piece of paper is folded exactly in half 3 times and one corner is cut off, how many holes will appear when unfolded?",
-        options: [
-          { value: "a", label: "A) 3" },
-          { value: "b", label: "B) 6" },
-          { value: "c", label: "C) 7" },
-          { value: "d", label: "D) 8" },
-          { value: "e", label: "E) I don't know" },
-        ],
-      },
     ],
   },
   {
@@ -1209,6 +1058,12 @@ const modules: Module[] = [
           { value: "b", label: "B) Thorough" },
           { value: "c", label: "C) Quick" },
           { value: "d", label: "D) Lazy" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "verbal-reasoning",
     title: "Verbal Reasoning",
     description: "Assess your language comprehension, vocabulary, and verbal logic abilities.",
     questions: [
@@ -1231,13 +1086,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Contract" },
           { value: "c", label: "C) Increase" },
           { value: "d", label: "D) Spread" },
-        text: "Find the odd one out: Happy, Joyful, Elated, Sad, Cheerful",
-        options: [
-          { value: "a", label: "A) Happy" },
-          { value: "b", label: "B) Joyful" },
-          { value: "c", label: "C) Sad" },
-          { value: "d", label: "D) Cheerful" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1248,13 +1096,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Eating" },
           { value: "c", label: "C) Writing" },
           { value: "d", label: "D) Cooking" },
-        text: "Complete the analogy: Doctor : Hospital :: Teacher : ?",
-        options: [
-          { value: "a", label: "A) Classroom" },
-          { value: "b", label: "B) Books" },
-          { value: "c", label: "C) Students" },
-          { value: "d", label: "D) School" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1265,13 +1106,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Tulip" },
           { value: "c", label: "C) Daisy" },
           { value: "d", label: "D) Oak" },
-        text: "What is the antonym of 'EXPAND'?",
-        options: [
-          { value: "a", label: "A) Grow" },
-          { value: "b", label: "B) Contract" },
-          { value: "c", label: "C) Increase" },
-          { value: "d", label: "D) Develop" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1282,13 +1116,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Antonym" },
           { value: "c", label: "C) Homonym" },
           { value: "d", label: "D) Metaphor" },
-        text: "If 'WRITE' is coded as 'XSJUF', how is 'READ' coded?",
-        options: [
-          { value: "a", label: "A) SFBE" },
-          { value: "b", label: "B) SFBD" },
-          { value: "c", label: "C) QDZC" },
-          { value: "d", label: "D) TDBE" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1299,13 +1126,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Each of the students has a book" },
           { value: "c", label: "C) Each of the student has a book" },
           { value: "d", label: "D) Each of the student have a book" },
-        text: "Choose the correctly spelled word:",
-        options: [
-          { value: "a", label: "A) Ocassion" },
-          { value: "b", label: "B) Occasion" },
-          { value: "c", label: "C) Ocasion" },
-          { value: "d", label: "D) Occassion" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1316,13 +1136,6 @@ const modules: Module[] = [
           { value: "b", label: "B) To entertain" },
           { value: "c", label: "C) To convince" },
           { value: "d", label: "D) To describe" },
-        text: "Select the word that best completes the sentence: The lawyer's argument was very _____ and convinced the jury.",
-        options: [
-          { value: "a", label: "A) Weak" },
-          { value: "b", label: "B) Persuasive" },
-          { value: "c", label: "C) Confusing" },
-          { value: "d", label: "D) Brief" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1333,13 +1146,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Predicate" },
           { value: "c", label: "C) Prepositional phrase" },
           { value: "d", label: "D) Object" },
-        text: "Identify the grammatically correct sentence:",
-        options: [
-          { value: "a", label: "A) Neither of the students have completed their homework" },
-          { value: "b", label: "B) Neither of the students has completed their homework" },
-          { value: "c", label: "C) Neither of the student have completed their homework" },
-          { value: "d", label: "D) Neither of the student has completed his homework" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1350,13 +1156,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Metaphor" },
           { value: "c", label: "C) Personification" },
           { value: "d", label: "D) Hyperbole" },
-        text: "What does the idiom 'A blessing in disguise' mean?",
-        options: [
-          { value: "a", label: "A) A secret gift" },
-          { value: "b", label: "B) Something good that initially seemed bad" },
-          { value: "c", label: "C) A hidden danger" },
-          { value: "d", label: "D) An unexpected visitor" },
-          { value: "e", label: "E) I don't know" },
         ],
       },
       {
@@ -1367,15 +1166,6 @@ const modules: Module[] = [
           { value: "b", label: "B) Before" },
           { value: "c", label: "C) Against" },
           { value: "d", label: "D) With" },
-        text: "Choose the word that is most opposite to 'TRANSPARENT':",
-        options: [
-          { value: "a", label: "A) Clear" },
-          { value: "b", label: "B) Opaque" },
-          { value: "c", label: "C) Visible" },
-          { value: "d", label: "D) Translucent" },
-          { value: "e", label: "E) I don't know" },
-        ],
-      },
     ],
   },
   {
@@ -1391,12 +1181,6 @@ const modules: Module[] = [
           { value: "b", label: "Look for supporting evidence" },
           { value: "c", label: "Consider alternative viewpoints" },
           { value: "d", label: "Check for logical fallacies" },
-        text: "Which of the following is an assumption in this argument: 'All students who study hard get good grades. Ram studies hard.'",
-        options: [
-          { value: "a", label: "A) Ram will get good grades" },
-          { value: "b", label: "B) Studying is the only factor affecting grades" },
-          { value: "c", label: "C) Ram is intelligent" },
-          { value: "d", label: "D) Good grades are important" },
         ],
       },
       {
@@ -1407,12 +1191,6 @@ const modules: Module[] = [
           { value: "b", label: "Looking for emotionally charged language" },
           { value: "c", label: "Comparing multiple sources" },
           { value: "d", label: "Identifying missing information" },
-        text: "Identify the logical fallacy: 'Everyone is buying this phone, so it must be the best.'",
-        options: [
-          { value: "a", label: "A) Ad hominem" },
-          { value: "b", label: "B) Bandwagon fallacy" },
-          { value: "c", label: "C) Straw man" },
-          { value: "d", label: "D) False dilemma" },
         ],
       },
       {
@@ -1423,12 +1201,6 @@ const modules: Module[] = [
           { value: "b", label: "Evaluate the credibility of each source" },
           { value: "c", label: "Consider that both might be partially correct" },
           { value: "d", label: "Defer to expert opinions" },
-        text: "What is the best conclusion from this data: 'In 80% of accidents, drivers were using phones. Therefore...'",
-        options: [
-          { value: "a", label: "A) Phone use causes all accidents" },
-          { value: "b", label: "B) Phone use is correlated with accidents" },
-          { value: "c", label: "C) Phones should be banned" },
-          { value: "d", label: "D) 20% of drivers don't use phones" },
         ],
       },
       {
@@ -1439,12 +1211,6 @@ const modules: Module[] = [
           { value: "b", label: "Looking for evidence that supports them" },
           { value: "c", label: "Considering cultural or personal biases" },
           { value: "d", label: "Testing them in real situations" },
-        text: "Which statement strengthens this argument: 'Online learning is effective for adult learners.'",
-        options: [
-          { value: "a", label: "A) Some students prefer in-person classes" },
-          { value: "b", label: "B) Adult learners show higher engagement in online courses" },
-          { value: "c", label: "C) Technology is evolving" },
-          { value: "d", label: "D) Traditional education has a long history" },
         ],
       },
       {
@@ -1455,12 +1221,6 @@ const modules: Module[] = [
           { value: "b", label: "Consider multiple perspectives" },
           { value: "c", label: "Look for patterns and connections" },
           { value: "d", label: "Gather comprehensive data first" },
-        text: "Evaluate: 'If it rains, the match will be cancelled. The match was cancelled. Therefore, it rained.' This is:",
-        options: [
-          { value: "a", label: "A) Valid reasoning" },
-          { value: "b", label: "B) Invalid - affirming the consequent" },
-          { value: "c", label: "C) Invalid - denying the antecedent" },
-          { value: "d", label: "D) Valid but unsound" },
         ],
       },
       {
@@ -1471,12 +1231,6 @@ const modules: Module[] = [
           { value: "b", label: "Identifying subjective language" },
           { value: "c", label: "Looking for citations and sources" },
           { value: "d", label: "Considering the context" },
-        text: "What is the main flaw in this argument: 'My grandfather smoked and lived to 90, so smoking isn't harmful.'",
-        options: [
-          { value: "a", label: "A) Hasty generalization" },
-          { value: "b", label: "B) Circular reasoning" },
-          { value: "c", label: "C) Appeal to authority" },
-          { value: "d", label: "D) False cause" },
         ],
       },
       {
@@ -1487,12 +1241,6 @@ const modules: Module[] = [
           { value: "b", label: "Consider long-term consequences" },
           { value: "c", label: "Seek input from others" },
           { value: "d", label: "Trust my intuition based on experience" },
-        text: "Which option best evaluates evidence: 'A survey of 10 people showed product X is popular.'",
-        options: [
-          { value: "a", label: "A) Strong evidence - survey was conducted" },
-          { value: "b", label: "B) Weak evidence - small sample size" },
-          { value: "c", label: "C) Moderate evidence - depends on the product" },
-          { value: "d", label: "D) No evidence - surveys are unreliable" },
         ],
       },
       {
@@ -1503,12 +1251,6 @@ const modules: Module[] = [
           { value: "b", label: "Source credibility and expertise" },
           { value: "c", label: "Consistency with other evidence" },
           { value: "d", label: "Recency and relevance" },
-        text: "Identify the type of reasoning: 'The sun has risen every day in recorded history, so it will rise tomorrow.'",
-        options: [
-          { value: "a", label: "A) Deductive reasoning" },
-          { value: "b", label: "B) Inductive reasoning" },
-          { value: "c", label: "C) Abductive reasoning" },
-          { value: "d", label: "D) Causal reasoning" },
         ],
       },
       {
@@ -1519,12 +1261,6 @@ const modules: Module[] = [
           { value: "b", label: "Question the entire argument" },
           { value: "c", label: "Look for other weaknesses" },
           { value: "d", label: "Reformulate the argument correctly" },
-        text: "What weakens this claim: 'Meditation improves focus in all individuals.'",
-        options: [
-          { value: "a", label: "A) Many people meditate daily" },
-          { value: "b", label: "B) Some individuals show no improvement after meditation" },
-          { value: "c", label: "C) Meditation has ancient roots" },
-          { value: "d", label: "D) Focus is important for success" },
         ],
       },
       {
@@ -1536,8 +1272,6 @@ const modules: Module[] = [
           { value: "c", label: "Checking temporal sequence" },
           { value: "d", label: "Examining the mechanism of action" },
         ],
-      },
-    ],
   },
   {
     id: "time-management",
@@ -1643,8 +1377,6 @@ const modules: Module[] = [
           { value: "c", label: "Delegating when possible" },
           { value: "d", label: "Being flexible and adaptive" },
         ],
-      },
-    ],
   },
   {
     id: "communication-preferences",
@@ -1750,8 +1482,6 @@ const modules: Module[] = [
           { value: "c", label: "Check in regularly with team members" },
           { value: "d", label: "Use collaborative tools effectively" },
         ],
-      },
-    ],
   },
   {
     id: "stress-resilience",
@@ -1857,8 +1587,6 @@ const modules: Module[] = [
           { value: "c", label: "Part of life to handle" },
           { value: "d", label: "Learning experiences" },
         ],
-      },
-    ],
   },
   {
     id: "creativity-innovation",
@@ -1964,8 +1692,6 @@ const modules: Module[] = [
           { value: "c", label: "Finding better ways to solve problems" },
           { value: "d", label: "Thinking differently about challenges" },
         ],
-      },
-    ],
   },
   {
     id: "data-interpretation",
@@ -2075,8 +1801,6 @@ const modules: Module[] = [
           { value: "c", label: "Create side-by-side visualizations" },
           { value: "d", label: "Calculate statistical measures" },
         ],
-      },
-    ],
   },
   {
     id: "decision-making",
@@ -2182,8 +1906,6 @@ const modules: Module[] = [
           { value: "c", label: "Flip a coin and be happy with either" },
           { value: "d", label: "Look for a way to combine both" },
         ],
-      },
-    ],
   },
   {
     id: "attention-detail",
@@ -2289,8 +2011,6 @@ const modules: Module[] = [
           { value: "c", label: "Requires conscious effort" },
           { value: "d", label: "Better with tools and systems" },
         ],
-      },
-    ],
   },
   {
     id: "memory-retention",
@@ -2396,8 +2116,6 @@ const modules: Module[] = [
           { value: "c", label: "Create comparison charts" },
           { value: "d", label: "Focus on unique features of each" },
         ],
-      },
-    ],
   },
   {
     id: "collaborative-learning",
@@ -2502,13 +2220,6 @@ const modules: Module[] = [
           { value: "b", label: "Alternating between solo and group study" },
           { value: "c", label: "Using groups for motivation and accountability" },
           { value: "d", label: "Preferring one mode over the other" },
-=======
-        text: "In scientific reasoning, what is the purpose of a control group?",
-        options: [
-          { value: "a", label: "A) To save time in experiments" },
-          { value: "b", label: "B) To provide a baseline for comparison" },
-          { value: "c", label: "C) To increase sample size" },
-          { value: "d", label: "D) To prove the hypothesis" },
         ],
       },
     ],
@@ -2617,8 +2328,6 @@ const modules: Module[] = [
           { value: "c", label: "Offering practical solutions" },
           { value: "d", label: "Validating their feelings" },
         ],
-      },
-    ],
   },
   {
     id: "time-management",
@@ -2724,8 +2433,6 @@ const modules: Module[] = [
           { value: "c", label: "When things aren't working" },
           { value: "d", label: "Rarely - I stick to the plan" },
         ],
-      },
-    ],
   },
   {
     id: "creativity-innovation",
@@ -2831,8 +2538,6 @@ const modules: Module[] = [
           { value: "c", label: "They provide helpful focus" },
           { value: "d", label: "They challenge me to think differently" },
         ],
-      },
-    ],
   },
   {
     id: "communication-style",
@@ -2938,8 +2643,6 @@ const modules: Module[] = [
           { value: "c", label: "To match others' preferences" },
           { value: "d", label: "I maintain consistency" },
         ],
-      },
-    ],
   },
   {
     id: "leadership-teamwork",
@@ -3045,8 +2748,6 @@ const modules: Module[] = [
           { value: "c", label: "Value each person's unique contribution" },
           { value: "d", label: "Facilitate understanding across differences" },
         ],
-      },
-    ],
   },
   {
     id: "adaptability-resilience",
@@ -3152,8 +2853,6 @@ const modules: Module[] = [
           { value: "c", label: "Appreciate the opportunity to refine" },
           { value: "d", label: "Evaluate its validity objectively" },
         ],
-      },
-    ],
   },
   {
     id: "decision-making",
@@ -3259,8 +2958,6 @@ const modules: Module[] = [
           { value: "c", label: "I let emotions override logic" },
           { value: "d", label: "I rarely regret my decisions" },
         ],
-      },
-    ],
   },
   {
     id: "work-style-preferences",
@@ -3366,8 +3063,6 @@ const modules: Module[] = [
           { value: "c", label: "Work-focused during career building" },
           { value: "d", label: "Prioritize personal life consistently" },
         ],
-      },
-    ],
   },
   {
     id: "technical-aptitude",
