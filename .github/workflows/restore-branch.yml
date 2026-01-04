@@ -16,6 +16,9 @@ jobs:
   restore-branch:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # Required to push branches to the repository
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
