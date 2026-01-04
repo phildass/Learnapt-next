@@ -28,10 +28,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       
-      - name: Fetch commit
+      - name: Fetch all refs
         run: |
-          echo "Fetching all refs to ensure commit is available..."
-          git fetch --all
+          echo "Fetching all refs from origin..."
+          git fetch origin
       
       - name: Create and push branch
         run: |

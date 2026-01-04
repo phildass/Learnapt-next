@@ -18,7 +18,7 @@ echo "At commit: $COMMIT_SHA"
 
 # Fetch the commit if not already present
 echo "Fetching from remote..."
-git fetch --all
+git fetch origin
 
 # Create the branch at the specific commit
 echo "Creating branch locally..."
