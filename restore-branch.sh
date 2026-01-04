@@ -22,11 +22,11 @@ git fetch --all
 
 # Create the branch at the specific commit
 echo "Creating branch locally..."
-git branch $BRANCH_NAME $COMMIT_SHA 2>/dev/null || echo "Branch already exists locally"
+git branch "$BRANCH_NAME" "$COMMIT_SHA" 2>/dev/null || echo "Branch already exists locally"
 
 # Push the branch to origin
 echo "Pushing branch to remote..."
-git push origin $BRANCH_NAME:$BRANCH_NAME
+git push origin "$BRANCH_NAME":"$BRANCH_NAME"
 
 echo "✓ Branch $BRANCH_NAME has been restored to the remote repository"
 echo "✓ Commit SHA: $COMMIT_SHA"
